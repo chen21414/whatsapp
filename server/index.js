@@ -32,7 +32,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false, //we don't want to set cookie on the browser if user hasn't logged in
     cookie: {
-        secure: process.env.ENVIRONMENT === "production", //secure means only set through https, but we are using http,"production" allows us to use http
+        secure: process.env.ENVIRONMENT === "production" ? "true" : "auto", //secure means only set through https, but we are using http,"production" allows us to use http; auto is default option
         httpOnly: true,
         sameSite: process.env.ENVIRONMENT === "production" ? "none" : "lax", //sameSite will only communicate bw same domain
         

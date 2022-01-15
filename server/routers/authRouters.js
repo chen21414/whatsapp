@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 //here is /auth/login
 router.post("/login", async (req, res) => {
     validateForm(req, res)
+    console.log(req.session.user);
 
     const potentialLogin = await pool.query("SELECT id, username pashhash FROM users u WHERE u.username=$1", 
     [req.body.username]); //select username from users
@@ -23,11 +24,11 @@ router.post("/login", async (req, res) => {
                 //login
                 req.session.user = {
                     username:req.body.username,
-                    id: newUserQuery.rows[0].id, //first row of the query
+                    id: potentialLogin.rows[0].id, //first row of the query
         
                 } //the value of key of a dictionary is in cookies in index.js, value of the dictionary is whatever's in here
                   //the saved hi:'world' is saved in the session's server memory, will show next time, and we can edit it
-                res.json({loggedIn: true, username})
+                res.json({loggedIn: true, username:req.body.username})
             } else {
                 //not good login
                 console.log("not good")
